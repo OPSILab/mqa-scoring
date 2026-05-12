@@ -175,7 +175,6 @@ async def useCaseConfigurator(options: Options, background_tasks: BackgroundTask
 # Auth model
 class Options(BaseModel):
     file_url: str = None
-    token: str = None
     url: Optional[str] = None
     id: Optional[str] = None
 # api to start a new analisys and save on db the results for both case catalogue and dataset
@@ -193,7 +192,7 @@ async def useCaseConfigurator(options: Options, background_tasks: BackgroundTask
       if configuration_inputs.file_url == None:
         return HTTPException(status_code=400, detail="Inputs not valid")
       else:
-        async with aiohttp.ClientSession(headers={"Authorization": f"Bearer {configuration_inputs.token}"}) as session:
+        async with aiohttp.ClientSession() as session:
           try:
             async with session.get(configuration_inputs.file_url) as response:
               if response.status != 200:
